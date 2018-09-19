@@ -1,12 +1,1 @@
-{
-  "name": "holdmybeer",
-  "version": "1.0.0",
-  "description": "DX toolset",
-  "main": "index.js",
-  "repository": "https://github.com/yahwastaken/holdmybeer",
-  "author": "Nicolas Barray <nbarray@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "minimist": "1.2.0"
-  }
-}
+{"name":"@nbarray/holdmybeer","private":true,"version":"1.0.0","description":"DX toolset","main":"index.js","repository":"https://github.com/yahwastaken/holdmybeer","author":"Nicolas Barray <nbarray@gmail.com>","license":"MIT","scripts":{"start":"node index.js"},"dependencies":{"execa":"1.0.0","fs-extra":"7.0.0","minimist":"1.2.0","tmp":"0.0.33","uuid":"3.3.2"}}
