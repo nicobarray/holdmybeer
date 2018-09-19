@@ -1,0 +1,9 @@
+{
+  "name": "holdmybeer",
+  "version": "1.0.0",
+  "description": "DX toolset",
+  "main": "index.js",
+  "repository": "https://github.com/yahwastaken/holdmybeer",
+  "author": "Nicolas Barray <nbarray@gmail.com>",
+  "license": "MIT"
+}
