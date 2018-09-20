@@ -10,14 +10,17 @@ const argv = parseArgs(process.argv.slice(2));
 const url = argv["u"] || argv["url"] || "github.com";
 const project = argv["p"] || argv["project"] || "yahwastaken/holdmybeer";
 const branch = argv["b"] || argv["branch"] || "master";
-const scope = argv["s"] || argv["scope"] || "@nbarray";
+const scope = argv["s"] || argv["scope"] || null;
 const otp = argv["otp"] || null;
+const forceVersion = argv["fv"] || argv["forceVersion"] || null;
 
 const remote = `git@${url}:${project}`;
 const root = path.join("/", "tmp", v4());
 const cloneDir = path.join(root, project);
 const packagePath = path.join(cloneDir, "package.json");
-const name = `${scope}/${project.split("/")[1] || project}`;
+const name = scope
+  ? `${scope}/${project.split("/")[1] || project}`
+  : project.split("/")[1] || project;
 
 const spinner = ora(`Hold my beer one sec...`);
 
@@ -30,6 +33,7 @@ async function main() {
           project,
           branch,
           scope,
+          forceVersion,
           otp
         },
         computed: {
@@ -80,22 +84,27 @@ async function main() {
 
   spinner.text = `5/8 Adding version to package.json`;
 
-  let version = null;
-  try {
-    const { stdout } = await execa.shell(`npm view ${package.name} version`);
-    version = stdout;
-  } catch (err) {
-    version = package.version;
-  }
-
-  const [packageVersion, scoppedVersion] = version.split("-");
-  const scopeWithoutAt = scope.substr(1);
-
-  if (!scoppedVersion) {
-    package.version = `${packageVersion}-${scopeWithoutAt}.1`;
+  if (forceVersion) {
+    package.version = forceVersion;
   } else {
-    const subVersionId = parseInt(scoppedVersion.split(".")[1], 10);
-    package.version = `${packageVersion}-${scopeWithoutAt}.${subVersionId + 1}`;
+    let version = null;
+    try {
+      const { stdout } = await execa.shell(`npm view ${package.name} version`);
+      version = stdout;
+    } catch (err) {
+      version = package.version;
+    }
+
+    const [packageVersion, scoppedVersion] = version.split("-");
+    const scopeWithoutAt = scope ? scope.substr(1) : "fork";
+
+    if (!scoppedVersion) {
+      package.version = `${packageVersion}-${scopeWithoutAt}.1`;
+    } else {
+      const subVersionId = parseInt(scoppedVersion.split(".")[1], 10);
+      package.version = `${packageVersion}-${scopeWithoutAt}.${subVersionId +
+        1}`;
+    }
   }
 
   await fs.writeJson(packagePath, package);
