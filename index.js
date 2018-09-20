@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 const parseArgs = require("minimist");
 const path = require("path");
 const { v4 } = require("uuid");
