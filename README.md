@@ -4,7 +4,7 @@ A collection of DX tools.
 
 # Tools
 
-## fork (default)
+## fork-npm (default)
 
 :warning: This project is a work in progress, use with caution.
 
